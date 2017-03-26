@@ -18,9 +18,13 @@ public class tester {
 		System.out.print("Added vehicle 2!");
 		System.out.println("Added at index: " + vehList.indexOf(newVeh));
 		
+		nmeaParse p = new nmeaParse();
+		String testP = "$GPRMC,123519,A,4807.038,S,01131.000,W,022.4,084.4,230394,003.1,W,V101*6A";
+		Vehicle test = p.parseUDP(testP);
 		
-		 Gson gson = new GsonBuilder().create();
-	     gson.toJson(newVeh, System.out);
+		
+		Gson gson = new GsonBuilder().create();
+	    gson.toJson(test, System.out);
 		//THIS IS COMMENT
 		
 	}
