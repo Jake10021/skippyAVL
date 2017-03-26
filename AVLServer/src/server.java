@@ -116,8 +116,9 @@ class doComms implements Runnable {
 
         while((line = in.readLine()) != null) {
           input=input + line;
-          System.out.println("I got:" + line);
-          out.println("Overall message is:" + input);
+          System.out.println("Received Message:" + line);
+          
+          out.println(""); //output send json back
         }
    
 

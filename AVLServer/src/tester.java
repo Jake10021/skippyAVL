@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import com.google.gson.*;
+
 
 public class tester {
 	public static void main(String args[]){
@@ -15,6 +17,10 @@ public class tester {
 		vehList.add(newVeh);
 		System.out.print("Added vehicle 2!");
 		System.out.println("Added at index: " + vehList.indexOf(newVeh));
+		
+		
+		 Gson gson = new GsonBuilder().create();
+	     gson.toJson(newVeh, System.out);
 		//THIS IS COMMENT
 		
 	}

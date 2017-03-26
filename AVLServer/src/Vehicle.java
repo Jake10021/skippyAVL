@@ -6,18 +6,18 @@ import java.time.format.*;
 public class Vehicle {
 
 	int ident;
-	char lastStatus;
-	double lastLat, lastLon, lastSpeed, lastHeading;
-	LocalTime lastSeen;
+	char status;
+	double latitude, longitude, speed, heading;
+	String lastSeen;
 	
-	public Vehicle (int vehicleID, char status, double lat, double lon, double speed, double heading){
+	public Vehicle (int vehicleID, char newStatus, double lat, double lon, double newSpeed, double newHead){
 		ident = vehicleID;
-		lastStatus = status;
-		lastLat = lat;
-		lastLon = lon;
-		lastSpeed = speed;
-		lastHeading = heading;
-		lastSeen = LocalTime.now();
+		status = newStatus;
+		latitude = lat;
+		longitude = lon;
+		speed = newSpeed;
+		heading = newHead;
+		lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 	
 	public Vehicle (int vehicleID){
@@ -26,19 +26,19 @@ public class Vehicle {
 	
 	
 	
-	public void update(char status, double lat, double lon, double speed, double heading){
-		lastStatus = status;
-		lastLat = lat;
-		lastLon = lon;
-		lastSpeed = speed;
-		lastHeading = heading;
-		lastSeen = LocalTime.now();		
+	public void update(char newStatus, double lat, double lon, double newSpeed, double newHead){
+		status = newStatus;
+		latitude = lat;
+		longitude = lon;
+		speed = newSpeed;
+		heading = newHead;
+		lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));		
 	}
 	
 	
 	
 	public String toString(){
-		return "Ident: " + ident + ", Last Seen: " + lastSeen.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		return "Ident: " + ident + ", Last Seen: " + lastSeen;
 	}
 
 	public boolean equals(Vehicle o){
