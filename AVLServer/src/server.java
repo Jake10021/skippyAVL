@@ -2,11 +2,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class server {
 
 	public static void main(String[] args) throws IOException {
-
+		List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
 		Listner listner = new Listner();
 		Thread thread = new Thread(listner);
 		thread.start();
