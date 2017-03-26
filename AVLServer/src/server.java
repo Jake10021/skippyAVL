@@ -1,22 +1,50 @@
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class server {
-
+	private static int maxConnections=5;
+	
 	public static void main(String[] args) throws IOException {
+		
 		List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
 		Listner listner = new Listner();
 		Thread thread = new Thread(listner);
 		thread.start();
+		
+		int i=0;
+
+	    try{
+	      ServerSocket listener = new ServerSocket(9099);
+	      Socket server;
+
+	      while((i++ < maxConnections) || (maxConnections == 0)){
+	    	System.out.println("Waiting for TCP connection...");
+	        doComms connection;
+	        server = listener.accept();
+	        doComms conn_c= new doComms(server);
+	        Thread t = new Thread(conn_c);
+	        t.start();
+	        System.out.println("New client connected.");
+	      }
+	    } catch (IOException ioe) {
+	      System.out.println("IOException on socket listen: " + ioe);
+	      ioe.printStackTrace();
+	    }
+	  }
 	}
 	
 
-}
 
 class Listner implements Runnable {
 	public void run() {
@@ -67,3 +95,36 @@ class Listner implements Runnable {
 	}
 }
 
+
+
+class doComms implements Runnable {
+    private Socket server;
+    private String line,input;
+
+    doComms(Socket server) {
+      this.server=server;
+    }
+
+    public void run () {
+
+      input="";
+
+      try {
+        // Get input from the client
+        BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
+        PrintStream out = new PrintStream(server.getOutputStream());
+
+        while((line = in.readLine()) != null) {
+          input=input + line;
+          System.out.println("I got:" + line);
+          out.println("Overall message is:" + input);
+        }
+   
+
+        server.close();
+      } catch (IOException ioe) {
+        System.out.println("IOException on socket listen: " + ioe);
+        ioe.printStackTrace();
+      }
+    }
+}
