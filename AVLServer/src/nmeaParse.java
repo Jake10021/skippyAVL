@@ -1,3 +1,4 @@
+import java.net.DatagramPacket;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -29,7 +30,7 @@ public class nmeaParse {
 		
 		String[] tokens = text.split(",");
 		
-		Vehicle v = new Vehicle(Integer.parseInt(tokens[12].substring(1, 4)));
+		Vehicle v = new Vehicle(Integer.parseInt(tokens[12].substring(0, 3)));
 		//Vehicle v = new Vehicle(15);
 		
 		v.status = tokens[2].charAt(0);

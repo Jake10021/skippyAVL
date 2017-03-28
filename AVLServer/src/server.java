@@ -20,6 +20,7 @@ public class server {
 		List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
 		Listner listner = new Listner();
 		Thread thread = new Thread(listner);
+		
 		thread.start();
 		
 		int i=0;
@@ -68,8 +69,15 @@ class Listner implements Runnable {
 				System.out.println("IO EXcept");
 			}
 			text = new String(message, 0, p.getLength());
+			nmeaParse nmeaP = new nmeaParse();
 			System.out.println("message = " + text);
 			System.out.println(calcChecksum(text));
+			
+			//here is where I am 
+			Vehicle v;
+			v = nmeaP.parseUDP(text);
+			System.out.println(v.toString());
+			
 			s.close();
 
 		}
