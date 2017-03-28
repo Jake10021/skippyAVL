@@ -118,7 +118,7 @@ class doComms implements Runnable {
           input=input + line;
           System.out.println("Received Message:" + line);
           
-          out.println(""); //output send json back
+          out.println("{\"status\":\"active\",\"vehicles\":[{\"ident\":5,\"status\":\"A\",\"latitude\":35.8,\"longitude\":-95.6,\"speed\":50.0,\"heading\":120.0,\"lastSeen\":\"14:39:27\"},{\"ident\":6,\"status\":\"A\",\"latitude\":35.8,\"longitude\":-95.6,\"speed\":50.0,\"heading\":120.0,\"lastSeen\":\"14:39:27\"}]}"); //output send json back
         }
    
 
