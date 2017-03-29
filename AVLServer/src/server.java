@@ -77,49 +77,58 @@ class Listner implements Runnable {
 			}
 			text = new String(message, 0, p.getLength());
 			nmeaParse nmeaP = new nmeaParse();
-			System.out.println("message = " + text);
-			System.out.println(calcChecksum(text));
+			//System.out.println("message = " + text);
+			//System.out.println(calcChecksum(text));
 			
-			Vehicle v = nmeaP.parseUDP(text);
-			boolean contains = false;
-			
-			synchronized(vehList){
-				for(Vehicle vehicle : vehList){
-					if(vehicle.ident == v.ident){
-						contains = true;
-						//vehicle = nmeaP.parseUDP(text);
-						vehicle.update(v.status, v.latitude, v.longitude, v.speed, v.heading);
-						System.out.println(v.time);
-						System.out.println("updated vehicle");
-						break;
+			String[] tokens = text.split(",");
+			String chckSum = tokens[12].substring(4).trim();
+			//check for valid checksum
+			if(calcChecksum(text).equals(chckSum)){
+				
+				Vehicle v = nmeaP.parseUDP(text);
+				boolean contains = false;
+				
+				synchronized(vehList){
+					for(Vehicle vehicle : vehList){
+						if(vehicle.ident == v.ident){
+							contains = true;
+							
+							//vehicle = nmeaP.parseUDP(text);
+							vehicle.update(v.status, v.latitude, v.longitude, v.speed, v.heading);
+							//System.out.println(v.time);
+							System.out.println("updated vehicle");
+							break;
+						}
 					}
-				}
-				if(contains == false){
-					vehList.add(v);
-					System.out.println("vehicle added.");
-				}
-				
-				
-				
-			}
-			//vehicle timeouts
-			synchronized(vehList){
-				Duration seconds;
-				for(Vehicle vehicle : vehList){
-					currentTime = LocalTime.now();
-					seconds = Duration.between(vehicle.time, currentTime);
+					if(contains == false){
+						vehList.add(v);
+						System.out.println("vehicle added.");
+					}
 					
-					if(seconds.getSeconds() >= 30){
-						vehList.remove(vehicle);
-						System.out.println("vehicle timeout");
-						
-					}
-						
+					
+					
 				}
-				
-				System.out.println(vehList);
+				//vehicle timeouts
+				synchronized(vehList){
+					Duration seconds;
+					for(Vehicle vehicle : vehList){
+						currentTime = LocalTime.now();
+						seconds = Duration.between(vehicle.time, currentTime);
+						
+						if(seconds.getSeconds() >= 30){
+							vehList.remove(vehicle);
+							System.out.println("vehicle timeout\n");
+							
+						}
+							
+					}
+					
+					System.out.println(vehList + "\n");
+				}
 			}
-			
+			else{
+				System.out.println("Invalid checksum : " + chckSum + "\n");
+			}
 			
 			s.close();
 
