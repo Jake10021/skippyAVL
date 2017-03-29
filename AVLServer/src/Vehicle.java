@@ -9,6 +9,7 @@ public class Vehicle {
 	char status;
 	double latitude, longitude, speed, heading;
 	String lastSeen;
+	LocalTime time;
 	
 	public Vehicle (int vehicleID, char newStatus, double lat, double lon, double newSpeed, double newHead){
 		ident = vehicleID;
@@ -18,10 +19,12 @@ public class Vehicle {
 		speed = newSpeed;
 		heading = newHead;
 		lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		time = LocalTime.now();
 	}
 	
 	public Vehicle (int vehicleID){
 		ident = vehicleID;
+		time = LocalTime.now();
 	}
 	
 	
@@ -32,7 +35,8 @@ public class Vehicle {
 		longitude = lon;
 		speed = newSpeed;
 		heading = newHead;
-		lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));		
+		lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		time = LocalTime.now();
 	}
 	
 	

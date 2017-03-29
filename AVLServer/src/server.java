@@ -11,6 +11,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.time.LocalTime;
+import java.time.*;
 
 public class server {
 	private static int maxConnections=5;
@@ -49,10 +51,12 @@ public class server {
 
 class Listner implements Runnable {
 	
+	public List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
 	public void run() {
+		
 		String text = null;
-		//list works here?
-		List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
+		LocalTime currentTime;
+		
 		while (true) {
 			text = null;
 			int server_port = 9099;
@@ -76,9 +80,7 @@ class Listner implements Runnable {
 			System.out.println("message = " + text);
 			System.out.println(calcChecksum(text));
 			
-			//here is where I am thinking I need to add vehicles into the list, but vehList is not a local variable
 			Vehicle v = nmeaP.parseUDP(text);
-			//vehList.add(v);
 			boolean contains = false;
 			
 			synchronized(vehList){
@@ -87,7 +89,7 @@ class Listner implements Runnable {
 						contains = true;
 						//vehicle = nmeaP.parseUDP(text);
 						vehicle.update(v.status, v.latitude, v.longitude, v.speed, v.heading);
-						//System.out.println(v.lastSeen);
+						System.out.println(v.time);
 						System.out.println("updated vehicle");
 						break;
 					}
@@ -96,6 +98,25 @@ class Listner implements Runnable {
 					vehList.add(v);
 					System.out.println("vehicle added.");
 				}
+				
+				
+				
+			}
+			//vehicle timeouts
+			synchronized(vehList){
+				Duration seconds;
+				for(Vehicle vehicle : vehList){
+					currentTime = LocalTime.now();
+					seconds = Duration.between(vehicle.time, currentTime);
+					
+					if(seconds.getSeconds() >= 30){
+						vehList.remove(vehicle);
+						System.out.println("vehicle timeout");
+						
+					}
+						
+				}
+				
 				System.out.println(vehList);
 			}
 			
