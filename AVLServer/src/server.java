@@ -16,11 +16,11 @@ import java.time.*;
 
 public class server {
 	private static int maxConnections=5;
+	public static List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
 	
 	public static void main(String[] args) throws IOException {
 		
-		//List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
-		Listner listner = new Listner();
+		Listner listner = new Listner(vehList);//working with listner constructor
 		Thread thread = new Thread(listner);
 		
 		thread.start();
@@ -51,7 +51,12 @@ public class server {
 
 class Listner implements Runnable {
 	
-	public List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
+	//public List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
+	List<Vehicle> vehList;
+	public Listner(List<Vehicle> vl){
+		vehList = vl;
+	}
+	
 	public void run() {
 		
 		String text = null;
