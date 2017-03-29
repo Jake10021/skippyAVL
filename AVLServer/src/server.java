@@ -17,7 +17,7 @@ public class server {
 	
 	public static void main(String[] args) throws IOException {
 		
-		List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
+		//List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
 		Listner listner = new Listner();
 		Thread thread = new Thread(listner);
 		
@@ -48,8 +48,11 @@ public class server {
 
 
 class Listner implements Runnable {
+	
 	public void run() {
 		String text = null;
+		//list works here?
+		List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
 		while (true) {
 			text = null;
 			int server_port = 9099;
@@ -73,10 +76,10 @@ class Listner implements Runnable {
 			System.out.println("message = " + text);
 			System.out.println(calcChecksum(text));
 			
-			//here is where I am 
-			Vehicle v;
-			v = nmeaP.parseUDP(text);
-			System.out.println(v.toString());
+			//here is where I am thinking I need to add vehicles into the list, but vehList is not a local variable
+			Vehicle v = nmeaP.parseUDP(text);
+			vehList.add(v);
+			System.out.println(vehList);
 			
 			s.close();
 
