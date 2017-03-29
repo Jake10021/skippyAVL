@@ -78,8 +78,27 @@ class Listner implements Runnable {
 			
 			//here is where I am thinking I need to add vehicles into the list, but vehList is not a local variable
 			Vehicle v = nmeaP.parseUDP(text);
-			vehList.add(v);
-			System.out.println(vehList);
+			//vehList.add(v);
+			boolean contains = false;
+			
+			synchronized(vehList){
+				for(Vehicle vehicle : vehList){
+					if(vehicle.ident == v.ident){
+						contains = true;
+						//vehicle = nmeaP.parseUDP(text);
+						vehicle.update(v.status, v.latitude, v.longitude, v.speed, v.heading);
+						//System.out.println(v.lastSeen);
+						System.out.println("updated vehicle");
+						break;
+					}
+				}
+				if(contains == false){
+					vehList.add(v);
+					System.out.println("vehicle added.");
+				}
+				System.out.println(vehList);
+			}
+			
 			
 			s.close();
 
