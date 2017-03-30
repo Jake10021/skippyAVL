@@ -42,9 +42,9 @@ public class server {
 
 			while ((i++ < maxConnections) || (maxConnections == 0)) {
 				System.out.println("Waiting for TCP connection...");
-				doComms connection;
+				AVLServer connection;
 				server = listener.accept();
-				doComms conn_c = new doComms(server, vehList);
+				AVLServer conn_c = new AVLServer(server, vehList);
 				Thread t = new Thread(conn_c);
 				t.start();
 				System.out.println("New client connected.");
@@ -150,13 +150,13 @@ class Listner implements Runnable {
 	}
 }
 
-class doComms implements Runnable {
+class AVLServer implements Runnable {
 	private Socket server;
 	private String line, input;
 	LocalTime currentTime;
 	List<Vehicle> vehList;
 
-	doComms(Socket server, List<Vehicle> vl) {
+	AVLServer(Socket server, List<Vehicle> vl) {
 		this.server = server;
 		vehList = vl;
 	}
