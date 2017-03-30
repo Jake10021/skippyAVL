@@ -37,7 +37,7 @@ public class nmeaParse {
 		v.longitude = longitudeToDecimal(tokens[5],tokens[6]);
 		v.speed = Double.parseDouble(tokens[7]);
 		v.heading = Double.parseDouble(tokens[8]);
-		v.lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		v.time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 		
 		return v;
 	}

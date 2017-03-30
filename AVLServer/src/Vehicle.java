@@ -1,59 +1,50 @@
 import java.time.LocalTime;
 import java.time.format.*;
 
-
-
 public class Vehicle {
 
 	int ident;
 	char status;
 	double latitude, longitude, speed, heading;
-	String lastSeen;
-	LocalTime time;
-	
-	public Vehicle (int vehicleID, char newStatus, double lat, double lon, double newSpeed, double newHead){
+	String time;
+	transient LocalTime lastSeen;
+
+	public Vehicle(int vehicleID, char newStatus, double lat, double lon, double newSpeed, double newHead) {
 		ident = vehicleID;
 		status = newStatus;
 		latitude = lat;
 		longitude = lon;
 		speed = newSpeed;
 		heading = newHead;
-		lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-		time = LocalTime.now();
+		time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		lastSeen = LocalTime.now();
 	}
-	
-	public Vehicle (int vehicleID){
+
+	public Vehicle(int vehicleID) {
 		ident = vehicleID;
-		time = LocalTime.now();
+		lastSeen = LocalTime.now();
 	}
-	
-	
-	
-	public void update(char newStatus, double lat, double lon, double newSpeed, double newHead){
+
+	public void update(char newStatus, double lat, double lon, double newSpeed, double newHead) {
 		status = newStatus;
 		latitude = lat;
 		longitude = lon;
 		speed = newSpeed;
 		heading = newHead;
-		lastSeen = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-		time = LocalTime.now();
+		time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		lastSeen = LocalTime.now();
 	}
-	
-	
-	
-	public String toString(){
+
+	public String toString() {
 		return "Ident: " + ident + ", Last Seen: " + lastSeen;
 	}
 
-	public boolean equals(Vehicle o){
+	public boolean equals(Vehicle o) {
 		if (o.ident == ident) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
-	
 
 }

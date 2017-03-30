@@ -1,36 +1,51 @@
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 
 
 public class tester_jake {
-	public static void main(String args[]){
-		List<Vehicle> vehList = Collections.synchronizedList(new ArrayList<Vehicle>());
-		Vehicle newVeh = new Vehicle(5,'A',35.8,-95.6,50.0,120.0);
-		System.out.println(newVeh.toString());
-		vehList.add(newVeh);
-		System.out.print("Added vehicle 1!");
-		System.out.println("Added at index: " + vehList.indexOf(newVeh));
-		newVeh = new Vehicle(6,'A',35.8,-95.6,50.0,120.0);
-		System.out.println(newVeh.toString());
-		vehList.add(newVeh);
-		System.out.print("Added vehicle 2!");
-		System.out.println("Added at index: " + vehList.indexOf(newVeh));
+	public static void main(String args[]) {
 		
-		String response = new String("");
-		response = response.concat("{\"status\":\"active\",\"vehicles\":[");
 		
-		 Gson gson = new GsonBuilder().create();
-		 for (Vehicle temp : vehList) {
-			 response = response.concat(gson.toJson(temp));
-			}
-		 response.substring(0,response.length()-1);
-	     
-		 response = response.concat("]}");
-	     
-	     System.out.println(response);
+		try{
+		String xmltest = new String();
+		xmltest = "<AV L><vehicles>active</vehicles></AVL>";
+		System.out.println(xmltest);
+		
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    DocumentBuilder builder = factory.newDocumentBuilder();
+	    InputSource is = new InputSource(new StringReader(xmltest));
+	    Document doc = builder.parse(is);
+	    NodeList nodes = doc.getChildNodes();
+	    if(nodes.item(0).getNodeName()=="AVL" && nodes.item(0).getChildNodes().item(0).getNodeName() == "vehicles"){
+		    System.out.println(doc.getDocumentElement().getTextContent());
+	    }
+	    else{
+	    	System.out.println("Invalid request from TCP client");
+	    }
+		}
+		catch (SAXException e) {
+		    
+		} catch (IOException e) {
+		
+		} catch (ParserConfigurationException e) {
+			
+		}
+	  
 	     
 		//THIS IS COMMENT
 		
